@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  api:
+    build:
+      context: ./Learn.Language.Api
+      dockerfile: Dockerfile
+    container_name: language_api
+    ports:
+      - "5000:80"
+    environment:
+      Mongo__ConnectionString: mongodb://rootuser:passw0rd7es7e@mongodb:27017
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: rootuser
+      MONGO_INITDB_ROOT_PASSWORD: passw0rd7es7e
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+volumes:
+  mongodb_data:
